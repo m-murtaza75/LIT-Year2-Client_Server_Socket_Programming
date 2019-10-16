@@ -1,0 +1,31 @@
+import socket #importing socket library
+
+'''Creating tcp IPv4 socket connection'''
+sock = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+
+'''Using same port on which server is listening'''
+port_number = 1030
+
+'''Address of the server to connect with'''
+server_address = "172.30.14.132"
+
+'''connect() function connects to the remote socket at specified address and port'''
+sock.connect((server_address, port_number))
+
+'''for-loop for receiving server's message and entering 4 numbers'''
+for i in range(4):
+      server_msg = sock.recv(1024)
+      print 'Message from server: ' + server_msg
+      '''Taking in client's input'''
+      response = raw_input()
+      '''sendall() function is used to send the reply of the client to server
+         it sends the entire buffer so no incomplete message is send to server'''
+      sock.sendall(response)
+
+'''printing the result got from the server using for loop'''
+for i in range(4):
+      print sock.recv(1024) 
+	
+
+'''closing client socket(connection)'''
+sock.close()

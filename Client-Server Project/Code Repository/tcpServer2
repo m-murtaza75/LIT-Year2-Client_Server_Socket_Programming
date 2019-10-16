@@ -1,0 +1,57 @@
+import socket #importing socket library
+
+'''Function that checks if a number is power of 2'''
+def is_power(n):
+    n = n/2
+    if (n == 1):
+        return True
+    elif n == 2:
+        return True
+    elif n > 2:
+        return is_power(n)
+    else:
+        return False
+
+
+
+
+'''Creating tcp IPv4 socket connection''' 
+sock = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+
+port_number = 1030
+
+sock.bind(('', port_number))
+
+sock.listen(3)
+
+
+print 'Waiting for accept() to Complete.... \n'
+
+while True:
+      conn,client_addr = sock.accept()
+      print 'Got connection from: ', client_addr
+      '''Asking for 4 numbers from Client''' 
+      conn.send("Client! Please enter 1st number:")
+      number1 = conn.recv(128)
+      conn.send("Client! Please enter 2nd number:")
+      number2 = conn.recv(128)
+      conn.send("Client! Please enter 3rd number:")
+      number3 = conn.recv(128)
+      conn.send("Client! Please enter 4th number:")
+      number4 = conn.recv(128)
+      '''Parsing numbers from string to float'''
+      print '1st Number is: ' + str(float(number1))
+      print '2nd Number is: ' + str(float(number2))
+      print '3rd Number is: ' + str(float(number3))
+      print '4th Number is: ' + str(float(number4))
+      '''Checking numbers if they are power of two'''
+      print is_power(float(number1))
+      print is_power(float(number2))
+      print is_power(float(number3))
+      print is_power(float(number4))
+      '''Converting the boolean value to String to send it back to client'''
+      conn.send("\n\n1st number Power of 2: " + str(is_power(float(number1))))
+      conn.send("\n2nd number Power of 2: " + str(is_power(float(number2))))
+      conn.send("\n3rd number Power of 2: " + str(is_power(float(number3))))
+      conn.send("\n4th number Power of 2: " + str(is_power(float(number4))))
+      conn.close()

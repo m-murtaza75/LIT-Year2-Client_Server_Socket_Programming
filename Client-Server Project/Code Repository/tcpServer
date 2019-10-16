@@ -1,0 +1,34 @@
+import socket #importing socket library
+
+'''Creating tcp IPv4 socket connection'''
+sock = socket.socket(socket.AF_INET,socket.SOCK_STREAM) 
+
+'''Assigning port number on which server listens'''
+port_number = 1024 
+
+'''Binds the connection of the IPv4 address that is on the same port as server is '''
+sock.bind(('', port_number)) 
+
+
+'''listens on the designated port number for connection   
+   made to the socket and number in listen() function 
+   specifies the number of queued connections
+'''
+sock.listen(1) 
+
+
+print 'Waiting for accept() to Complete.... \n'
+
+while True:
+      '''conn first parameter used to send receive message from client
+         client_addr is second parameter of accept() function that is
+	 used to assign the IP address of the client
+      '''
+      conn,client_addr = sock.accept()
+      '''Validating client's address'''
+      print 'Got connection from: ', client_addr
+      conn.send("Client!Please Enter your Name: ")
+      data = conn.recv(1024) #receiving client message(name)
+      print "Client name is: " + data
+      conn.send("Client your name is: " + data)
+      conn.close() #closing of the connection conn socket
